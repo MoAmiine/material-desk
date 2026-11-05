@@ -33,4 +33,4 @@ const equipmentSchema = new mongoose.Schema({
     }
 })
 
-export const Equipment = mongoose.model('Equipment', equipementSchema);
+export const Equipment = mongoose.model('Equipment', equipmentSchema);
