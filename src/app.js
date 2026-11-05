@@ -1,5 +1,5 @@
 import express from 'express';
-import { OK } from 'zod/v3';
+import { errorHandler } from './middlewares/error-handler.js'
 
 const app = express();
 app.use(express.json());
@@ -7,5 +7,7 @@ app.use(express.json());
 app.get('/health', (req, res) => {
     res.json({status: 'ok'});
 })
+
+app.use(errorHandler);
 
 export default app;
