@@ -29,3 +29,9 @@ export const getById = async (req, res, next) => {
         next(error)
     }
 }
+
+let witnessCount = 0
+export const dummyCreate = (req, res) => {
+    witnessCount++
+    res.status(200).json({reached: true, count: witnessCount})
+}
