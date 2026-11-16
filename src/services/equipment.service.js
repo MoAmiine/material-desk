@@ -40,3 +40,15 @@ export const getEquipmentById = async (id) => {
     return equipment
 }
 
+export const createEquipment = async (data) => {
+    const result = {...data, isArchived: false, checkoutCount: 0}
+    try{
+        const equipment = await equipmentRepo.create(result)
+        return equipment
+    }catch(error){
+        if(error.code === 11000){
+            throw createError(409, 'code already existed');
+        }
+        throw error;
+    }
+}

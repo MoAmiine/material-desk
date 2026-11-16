@@ -30,8 +30,12 @@ export const getById = async (req, res, next) => {
     }
 }
 
-let witnessCount = 0
-export const dummyCreate = (req, res) => {
-    witnessCount++
-    res.status(200).json({reached: true, count: witnessCount})
+export const create = async (req, res, next) => {
+    try{
+        const validated = req.validatedBody
+        const result = await equipmentService.createEquipment(req.validatedBody)
+        res.status(201).json(result)
+    }catch(error){
+        next(error)
+    }
 }

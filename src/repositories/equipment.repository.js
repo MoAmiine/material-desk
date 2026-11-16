@@ -15,3 +15,8 @@ export const findById = async (id) => {
     const equipment = await Equipment.findById(id);
     return equipment;
 }
+
+export const create = async (data) => {
+    const equipment = await Equipment.create(data)
+    return equipment;
+}
