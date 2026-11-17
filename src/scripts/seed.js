@@ -1,8 +1,10 @@
 import 'dotenv/config';
 import bcrypt from 'bcrypt';
+import mongoose from 'mongoose';
 import { connectDB } from '../config/db.js';
 import { User } from '../models/user.model.js';
 import { Equipment } from '../models/equipment.model.js';
+import { Loan } from '../models/loan.model.js';
 
 const seed = async () => {
   try {
@@ -10,6 +12,7 @@ const seed = async () => {
 
     await User.deleteMany();
     await Equipment.deleteMany();
+    await Loan.deleteMany();
 
     const adminPassword = await bcrypt.hash('admin123', 10);
     const memberPassword = await bcrypt.hash('member123', 10);
@@ -19,7 +22,7 @@ const seed = async () => {
       { email: 'member@test.com', password: memberPassword, role: 'member' }
     ]);
 
-    const equipments = await Equipment.create([
+    const [e1, e2, e3] = await Equipment.create([
       {
         assetTag: 'VID-001',
         name: 'Vidéoprojecteur',
@@ -46,9 +49,40 @@ const seed = async () => {
       }
     ]);
 
+    const absentEquipmentId = new mongoose.Types.ObjectId();
+
+    const loans = await Loan.create([
+      {
+        equipmentId: e1._id,
+        status: 'returned',
+        returnedAt: new Date('2026-10-01T10:00:00Z')
+      },
+      {
+        equipmentId: e2._id,
+        status: 'returned',
+        returnedAt: new Date('2026-10-03T10:00:00Z')
+      },
+      {
+        equipmentId: e1._id,
+        status: 'ongoing',
+        returnedAt: null
+      },
+      {
+        equipmentId: e1._id,
+        status: 'returned',
+        returnedAt: new Date('2026-09-30T10:00:00Z')
+      },
+      {
+        equipmentId: absentEquipmentId,
+        status: 'returned',
+        returnedAt: new Date('2026-10-02T10:00:00Z')
+      }
+    ]);
+
     console.log('Seed completed successfully');
-    console.log('Users created:', users.map(u => ({ email: u.email, role: u.role, id: u._id })));
-    console.log('Equipments created:', equipments.map(e => ({ tag: e.assetTag, id: e._id })));
+    console.log('Users created:', users.length);
+    console.log('Equipments created:', 3);
+    console.log('Loans created:', loans.length);
 
     process.exit(0);
   } catch (error) {
