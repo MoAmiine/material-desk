@@ -52,3 +52,37 @@ export const createEquipment = async (data) => {
         throw error;
     }
 }
+
+export const updateEquipment = async (id, data) => {
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    throw createError(400, 'Format identifiant invalide');
+  }
+
+  const equipment = await equipmentRepo.findById(id);
+  if (!equipment) {
+    throw createError(404, 'Équipement non trouvé');
+  }
+
+  if (equipment.isArchived) {
+    throw createError(409, 'Impossible de modifier un équipement archivé');
+  }
+
+  return await equipmentRepo.update(id, data);
+};
+
+export const incrementCheckout = async (id) => {
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    throw createError(400, 'Format identifiant invalide');
+  }
+
+  const equipment = await equipmentRepo.findById(id);
+  if (!equipment) {
+    throw createError(404, 'Équipement non trouvé');
+  }
+
+  if (equipment.isArchived) {
+    throw createError(409, 'Impossible de modifier un équipement archivé');
+  }
+
+  return await equipmentRepo.incrementCheckout(id);
+};
