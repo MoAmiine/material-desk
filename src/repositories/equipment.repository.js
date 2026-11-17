@@ -22,13 +22,13 @@ export const create = async (data) => {
 }
 
 export const update = async (id, data) => {
-  return await Equipment.findByIdAndUpdate(id, data, { new: true, runValidators: true });
-}
+  return await Equipment.findByIdAndUpdate(id, data, { returnDocument: 'after', runValidators: true });
+};
 
 export const incrementCheckout = async (id) => {
   return await Equipment.findByIdAndUpdate(
     id,
     { $inc: { checkoutCount: 1 } },
-    { new: true }
+    { returnDocument: 'after' }
   );
-}
+};

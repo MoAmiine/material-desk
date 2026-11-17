@@ -39,3 +39,21 @@ export const create = async (req, res, next) => {
         next(error)
     }
 }
+
+export const update = async (req, res, next) => {
+  try {
+    const result = await equipmentService.updateEquipment(req.params.id, req.validatedBody);
+    res.status(200).json(result);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const checkout = async (req, res, next) => {
+  try {
+    const result = await equipmentService.incrementCheckout(req.params.id);
+    res.status(200).json(result);
+  } catch (error) {
+    next(error);
+  }
+};
