@@ -20,3 +20,15 @@ export const create = async (data) => {
     const equipment = await Equipment.create(data)
     return equipment;
 }
+
+export const update = async (id, data) => {
+  return await Equipment.findByIdAndUpdate(id, data, { new: true, runValidators: true });
+}
+
+export const incrementCheckout = async (id) => {
+  return await Equipment.findByIdAndUpdate(
+    id,
+    { $inc: { checkoutCount: 1 } },
+    { new: true }
+  );
+}
